@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const connectDb = async () => {
     try {
-        const uri = `mongodb+srv://${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@${process.env.MONGO_CLUSTER}/${process.env.MONGO_DB_NAME}`;
+        const uri = "mongodb+srv://nanthagopal:9994797571@cluster0.0am1g.mongodb.net/BLOOD";
         const connect = await mongoose.connect(uri);
         console.log(`✅ Database Connected: ${connect.connection.host}/${connect.connection.name}`);
     } catch (error) {
