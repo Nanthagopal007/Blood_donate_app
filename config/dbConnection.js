@@ -2,7 +2,8 @@ const mongoose = require("mongoose");
 
 const connectDb = async () => {
     try {
-        const uri = "mongodb+srv://nanthagopal:9994797571@cluster0.0am1g.mongodb.net/BLOOD";
+        // Fetch URI from environment variables
+        const uri = process.env.MONGO_URI;
         const connect = await mongoose.connect(uri);
         console.log(`✅ Database Connected: ${connect.connection.host}/${connect.connection.name}`);
     } catch (error) {

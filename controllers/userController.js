@@ -112,16 +112,6 @@ const getAllUsers = asyncHandler(async (req, res) => {
     }
 });
 
-// // ✅ Generate JWT Token with Role
-// const generateToken = (userId, role) => {
-//     return jwt.sign(
-//         { id: userId, role }, 
-//         process.env.ACCESS_TOKEN_SECRET,
-//         { expiresIn: "1d" }
-//     );
-// };
-// ✅ Generate JWT Token with Role (Fixed with safety check)
-
 const generateToken = (userId, role) => {
     const secret = process.env.ACCESS_TOKEN_SECRET;
 

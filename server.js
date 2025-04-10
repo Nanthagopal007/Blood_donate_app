@@ -11,14 +11,15 @@ const app = express();
 const port = process.env.PORT || 5001;
 
 
-// ✅ Use the correct CORS settings
+
 app.use(
   cors({
-    origin: "http://localhost:3001", // ✅ Set your frontend URl
+    origin: process.env.REACT_APP_API_URL, // ✅ Allow the frontend domain from .env
     methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true, // ✅ Allow credentials (cookies, authentication)
+    credentials: true, // ✅ Allow cookies or other credentials
   })
 );
+
 
 app.use(express.json());
 app.use("/api/contacts", require("./routes/contactRoutes")); // ✅ Fix path
