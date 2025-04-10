@@ -4,6 +4,7 @@ const cors = require("cors");
 const errorHandler = require("./middlewares/errorHandler"); // ✅ Fix path
 const connectDb = require("./config/dbConnection");
 
+
 connectDb();
 const app = express();
 
