@@ -112,20 +112,14 @@ const getAllUsers = asyncHandler(async (req, res) => {
     }
 });
 
-const generateToken = (userId, role) => {
-    const secret = process.env.ACCESS_TOKEN_SECRET;
-
-    if (!secret) {
-        console.error("🚨 ACCESS_TOKEN_SECRET is missing from environment variables.");
-        throw new Error("Internal server error: Token secret not configured.");
-    }
-
+//generate token
+const generateToken = (user) => {
     return jwt.sign(
-        { id: userId, role },
-        secret,
-        { expiresIn: "1d" }
+      { id: user._id, role: user.role, email: user.email }, // Payload
+      process.env.ACCESS_TOKEN_SECRET, // This should pull the secret from the .env file
+      { expiresIn: "1d" }
     );
-};
+  };
 
 
 // ✅ Middleware for Role-Based Access Control
