@@ -9,11 +9,12 @@ connectDb();
 const app = express();
 
 const port = process.env.PORT || 5001;
+
 app.use(
   cors({
-    origin: process.env.REACT_APP_API_URL, // ✅ Allow the frontend domain from .env
+    origin: process.env.REACT_APP_API_URL,
     methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true, // ✅ Allow cookies or other credentials
+    credentials: true,
   })
 );
 
