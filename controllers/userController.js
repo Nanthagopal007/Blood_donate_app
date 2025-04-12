@@ -114,12 +114,14 @@ const getAllUsers = asyncHandler(async (req, res) => {
 
 //generate token
 const generateToken = (user) => {
+    console.log("🔑 Secret Loaded:", process.env.ACCESS_TOKEN_SECRET);  // Check the secret value
     return jwt.sign(
-      { id: user._id, role: user.role, email: user.email }, // Payload
-      process.env.ACCESS_TOKEN_SECRET, // This should pull the secret from the .env file
-      { expiresIn: "1d" }
+        { id: user._id, role: user.role, email: user.email },
+        process.env.ACCESS_TOKEN_SECRET,  // Secret loaded from .env
+        { expiresIn: "1d" }
     );
-  };
+};
+
 
 
 // ✅ Middleware for Role-Based Access Control

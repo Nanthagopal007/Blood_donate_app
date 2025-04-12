@@ -11,15 +11,23 @@ const app = express();
 const port = process.env.PORT || 5001;
 
 // ✅ Use CORS early (PRODUCTION setup)
+const allowedOrigins = [
+  "http://localhost:3000",
+  "https://blood-donation-social-service-app.vercel.app"
+];
+
 app.use(
   cors({
-    origin: "http://localhost:3000", // ✅ Frontend URL only
-    credentials: true, // ✅ Required to send cookies/headers
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization"], // ✅ Ensure token passes
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
   })
 );
-
 // ✅ Parse cookies and JSON
 app.use(cookieParser());
 app.use(express.json());
