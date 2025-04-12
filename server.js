@@ -13,7 +13,7 @@ const port = process.env.PORT || 5001;
 // ✅ Use CORS early (PRODUCTION setup)
 app.use(
   cors({
-    origin: "https://blood-donate-app.onrender.com", // ✅ Frontend URL only
+    origin: "http://localhost:3000", // ✅ Frontend URL only
     credentials: true, // ✅ Required to send cookies/headers
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"], // ✅ Ensure token passes
