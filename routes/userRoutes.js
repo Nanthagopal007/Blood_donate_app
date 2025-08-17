@@ -1,38 +1,46 @@
-const express = require("express");
-const { registerUser, loginUser, currentUser, deleteUser, authorizeRoles, getAllUsers } = require("../controllers/userController"); 
-const validateToken = require("../middlewares/validateTokenHandler");
-const User = require("../models/userModel");
+// const express = require("express");
+// const {
+//   registerUser,
+//   loginUser,
+//   currentUser,
+//   deleteUser,
+//   authorizeRoles,
+//   getAllUsers,
+// } = require("../controllers/userController");
+// const validateToken = require("../middlewares/validateTokenHandler");
 
+// const router = express.Router();
+
+// // 🔓 Public routes
+// router.post("/register", registerUser);
+// router.post("/login", loginUser);
+
+// // 🔒 Protected routes
+// router.get("/current", validateToken, currentUser);
+// router.get("/all", validateToken, authorizeRoles("admin"), getAllUsers);
+// router.delete("/:id", validateToken, authorizeRoles("admin"), deleteUser);
+
+// module.exports = router;
+const express = require("express");
+const {
+  registerUser,
+  loginUser,
+  currentUser,
+  deleteUser,
+  authorizeRoles,
+  getAllUsers,
+} = require("../controllers/userController");
+const validateToken = require("../middlewares/validateTokenHandler");
 
 const router = express.Router();
 
-// 🔓 Public Routes
+// Public
 router.post("/register", registerUser);
 router.post("/login", loginUser);
 
-// 🔒 Protected Routes (Ensure validateToken runs before authorizeRoles)
-router.get("/current", validateToken, authorizeRoles("user", "admin"), currentUser);
-router.delete("/:id", async (req, res) => {
-    try {
-        const user = await User.findByIdAndDelete(req.params.id);
-        if (!user) {
-            return res.status(404).json({ message: "User not found" });
-        }
-        res.json({ message: "User deleted successfully" });
-    } catch (error) {
-        res.status(500).json({ message: "Error deleting user" });
-    }
-});
-
-// Example in Express.js (Backend)
-router.get("/all", async (req, res) => {
-    try {
-        const users = await User.find({}, "-password"); // Exclude passwords for security
-        res.json(users);
-    } catch (error) {
-        res.status(500).json({ message: "Error fetching users" });
-    }
-});
-
+// Protected
+router.get("/current", validateToken, currentUser);
+router.get("/all", validateToken, authorizeRoles("admin"), getAllUsers);
+router.delete("/:id", validateToken, authorizeRoles("admin"), deleteUser);
 
 module.exports = router;
