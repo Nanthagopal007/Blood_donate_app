@@ -12,18 +12,21 @@ const port = process.env.PORT || 5001;
 
 // ✅ Allowed frontend origins
 const allowedOrigins = [
-  "http://localhost:3000",  // local dev
-  "https://blood-donation-social-service-app.vercel.app"  // vercel frontend
+  "http://localhost:3000", // local dev
+  "https://blood-donation-social-service-app.vercel.app" // production frontend
 ];
 
-// ✅ Use CORS (handle preflight too)
+// ✅ Use CORS
 app.use(
   cors({
     origin: function (origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
+      // Allow requests with no origin (like Postman)
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
       } else {
-        callback(null, false); // ❌ instead of throwing error
+        return callback(new Error("Not allowed by CORS"));
       }
     },
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
@@ -31,9 +34,6 @@ app.use(
     credentials: true,
   })
 );
-
-// ✅ Handle preflight requests globally
-app.options("*", cors());
 
 // ✅ Middleware
 app.use(cookieParser());
@@ -47,7 +47,7 @@ app.use("/api/donors", require("./routes/donorDetailsRoutes"));
 // ✅ Error handler
 app.use(errorHandler);
 
-// ✅ Start server (Render hosting supports this)
+// ✅ Start server
 app.listen(port, () => {
   console.log(`🚀 Server running on port ${port}`);
 });
