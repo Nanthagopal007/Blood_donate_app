@@ -47,32 +47,33 @@ const registerUser = asyncHandler(async (req, res) => {
     }
 });
 
-// @desc Login user
-// @route POST /api/users/login
-// @access Public
-const loginUser = asyncHandler(async (req, res) => {
+
+const loginUser = async (req, res, next) => {
+  try {
     const { email, password } = req.body;
 
-    if (!email || !password) {
-        res.status(400);
-        throw new Error("All fields are required!");
-    }
-
     const user = await User.findOne({ email });
-
-    if (user && (await bcrypt.compare(password, user.password))) {
-        res.status(200).json({
-            _id: user.id,
-            name: user.name,
-            email: user.email,
-            role: user.role,
-            token: `Bearer ${generateToken(user.id, user.role)}`,  // ✅ Ensure correct Bearer format
-        });
-    } else {
-        res.status(401);
-        throw new Error("Invalid credentials");
+    if (!user) {
+      res.status(400);
+      throw new Error("❌ User not found, please register first!");
     }
-});
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      res.status(401);
+      throw new Error("❌ Password is incorrect!");
+    }
+
+    res.json({
+      message: "✅ Login successful!",
+      role: user.role,
+      token: "your-jwt-token-here"
+    });
+
+  } catch (err) {
+    next(err); // handled by your errorHandler
+  }
+};
 
 // @desc Delete a user (Admin Only)
 // @route DELETE /api/users/:id
