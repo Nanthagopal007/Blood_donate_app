@@ -3,19 +3,20 @@ const dotenv = require("dotenv").config();
 const cors = require("cors");
 const errorHandler = require("./middlewares/errorHandler");
 const connectDb = require("./config/dbConnection");
-const cookieParser = require("cookie-parser"); // Optional if you use cookies
+const cookieParser = require("cookie-parser");
 
 connectDb();
 
 const app = express();
 const port = process.env.PORT || 5001;
 
-// ✅ Use CORS early (PRODUCTION setup)
+// ✅ Allowed frontend origins
 const allowedOrigins = [
-  "http://localhost:3000",
-  "https://blood-donation-social-service-app.vercel.app"
+  "http://localhost:3000",  // local dev
+  "https://blood-donation-social-service-app.vercel.app"  // your frontend on Vercel
 ];
 
+// ✅ Use CORS
 app.use(
   cors({
     origin: function (origin, callback) {
@@ -28,7 +29,8 @@ app.use(
     credentials: true,
   })
 );
-// ✅ Parse cookies and JSON
+
+// ✅ Middleware
 app.use(cookieParser());
 app.use(express.json());
 
@@ -37,10 +39,10 @@ app.use("/api/contacts", require("./routes/contactRoutes"));
 app.use("/api/users", require("./routes/userRoutes"));
 app.use("/api/donors", require("./routes/donorDetailsRoutes"));
 
-// ✅ Error handler (must be after routes)
+// ✅ Error handler
 app.use(errorHandler);
 
-// ✅ Start server
+// ✅ Start server (Render hosting supports this)
 app.listen(port, () => {
-  console.log(`🚀 Server running in production on port ${port}`);
+  console.log(`🚀 Server running on port ${port}`);
 });
