@@ -1,11 +1,11 @@
 const express = require("express");
 const {
-    getDonors,
-    getDonorById,
-    createDonor,
-    updateDonor,
-    updateDonorStatus, // ✅ Added status update controller
-    deleteDonor,
+  getDonors,
+  getDonorById,
+  createDonor,
+  updateDonor,
+  updateDonorStatus, // ✅ Added status update controller
+  deleteDonor,
 } = require("../controllers/donordetailsController");
 
 const router = express.Router();
